@@ -1,0 +1,18 @@
+target C {
+    platform: "Pico",
+    threading: false,
+    #no-compile: true,
+    #cmake-include: ["../platform/pico_config.txt"] 
+}
+
+preamble {=
+    #include <stdio.h>
+    #include "pico/stdlib.h"
+=}
+
+main reactor {
+    timer t1(0, 1 sec); 
+    reaction(t1) {=
+        printf("Hello World!\n");
+    =}
+}
