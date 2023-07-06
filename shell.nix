@@ -30,5 +30,6 @@ pkgs.mkShell {
     cd test/
     npm install
     echo "[shell] hook end"
+    cd ../
     '';
 }

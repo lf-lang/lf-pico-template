@@ -1,6 +1,7 @@
 target C {
     platform: "Pico",
     threading: false,
+    timeout: 10 sec,
     #no-compile: true,
     #cmake-include: ["../platform/pico_config.txt"] 
 }
