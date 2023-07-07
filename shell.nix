@@ -18,6 +18,7 @@ pkgs.mkShell {
     # lingo
   ];
 
+  # TODO: integrate dependencies into nix
   shellHook = ''
     echo "[shell] hook start"
     echo "[shell] setup pico-sdk"
