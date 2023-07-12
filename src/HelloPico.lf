@@ -1,14 +1,11 @@
 target C {
-    platform: "Pico",
+    platform: "Rp2040",
     threading: false,
-    timeout: 10 sec,
-    #no-compile: true,
-    #cmake-include: ["../platform/pico_config.txt"] 
+    timeout: 5 sec,
 }
 
 preamble {=
     #include <stdio.h>
-    #include "pico/stdlib.h"
 =}
 
 main reactor {
