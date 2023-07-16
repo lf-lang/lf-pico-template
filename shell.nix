@@ -12,6 +12,7 @@ pkgs.mkShell {
     git
     nodejs
     zellij
+    #fzf
   ];
   buildInputs = [
     # lf

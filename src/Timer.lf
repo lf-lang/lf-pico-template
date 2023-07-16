@@ -1,5 +1,5 @@
 target C {
-    platform: "Pico",
+    platform: "Rp2040",
     threading: false,
     timeout: 10 sec,
 }
