@@ -1,15 +1,17 @@
-# lf-pico-template
-This repo is a template for [Lingua Franca](https://www.lf-lang.org/) projects using the baremetal RP2040 target platform. Currently the repo supports macos, linux and windows through [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
-To support RP2040 based boards, the repo uses the [pico-sdk](https://github.com/raspberrypi/pico-sdk/tree/master/src)as a dependency which includes a light set of headers, libraries and a build system to interact with the mcu.
+# Template for the Lingua Franca RP2040 target platform
+This repo is a template for [Lingua Franca](https://www.lf-lang.org/) projects using the bare metal RP2040 target platform such as found on the Raspberry Pi Pico board and the [Pololu 3pi+ 2040 robot](https://www.pololu.com/docs/0J86). Currently the repo supports MacOS, Linux, and Windows through [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+To support RP2040-based boards, the repo uses the [Pico SDK](https://github.com/raspberrypi/pico-sdk/tree/master/src) as a dependency which includes a light set of headers, libraries and a build system.
 
 ## Setup
-The lf-pico-template uses nix to manage toolchains and other applications. Install [nix](https://nixos.org/download.html) first for your preferred platform. Make note of the installation type since a **multi-user** install will require sudo permissions and will interact with a system-wide `/nix/store`. After installation, run the following in the shell to enable the experimental nix flakes feature.
+This template uses nix to manage toolchains and other applications. Install [nix](https://nixos.org/download.html) first for your preferred platform. Make note of the installation type since a **multi-user** install will require sudo permissions and will interact with a system-wide `/nix/store`. After installation, run the following in the shell to enable the experimental nix flakes feature.
+
 ``` bash
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
 To launch the lf-pico shell environment, run the following in the root of the lf-pico repository. The launched shell will include the various required toolchains and applications needed for development.
+
 ```bash
 nix develop
 ```
@@ -26,27 +28,18 @@ lfc src/Blink.lf
 ```
 An application binary will be populated in the ``/bin`` directory with the same name as the source file. The source code for the application after code generation will be in the ``/src-gen`` folder.
 
-### Lingo
-TODO: a work in progress
-An alternative method for generating code and building is using Lingo. Lingo uses a a toml file to specify what applications to build and different target properties to assign them. Build artifacts are populated in the ``/target`` directory.
-
-To build an application, add then application to the ``Lingo.toml`` file in the repository root.
-
-After adding, run the following.
-``` bash
-lingo build
-```
-
 ## Flashing
 Before flashing the binary to your rp2040 based board, the board must be placed into ``BOOTSEL`` mode. On a [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/) this can be entered by holding the ``RESET`` button while connecting the board to the host device.
 
 The [picotool](https://github.com/raspberrypi/picotool) application installed in the nix shell is an easy way to interact with boards.
 With the application you can check what programs are currently flashed and can directly load program binaries. Run ``picotool help`` for more information on its capabilities.
 
+
 Run the following to flash an application binary on to your board.
 ``` shell
-picotool load bin/Blink.elf
+picotool load -x bin/Blink.elf
 ```
+
 ## Serial
 Standard IO output can be redirected to be hosted across either a usb connection or pins connected to a uart peripheral. This option is specified by modifying the `platform` target option. Use the board field to specify the `<board_name>:"uart" "usb"`, where `uart` will redirect the stdio signal to the hardware pins for the particular board. Board options can be found [here](https://github.com/raspberrypi/pico-sdk/tree/master/src/boards/include/boards)
 
@@ -83,6 +76,7 @@ Probe GP3 -> Target SWDIO
 Probe GP4 (UART1 TX) -> Target GP1 (UART0 RX)
 Probe GP5 (UART1 RX) -> Target GP0 (UART0 TX)
 ```
+
 *UART0* is the default uart peripheral used for stdio when uart is enabled for stdio in cmake. The target board uart is passed through the probe and can be accessed as usual using a serial port communication program on the host device connected to the probe.
 
 ### OpenOCD
@@ -105,7 +99,8 @@ The above will specify the
 ### GDB
 The gnu debugger is an open source program for stepping through application code. Here we use the remote target feature to connect to the exposed debug server provided by openocd. 
 
-Make sure the intended program to be debugged on the **target** device has an accessible `.elf` binary that was built using the `Debug` option. To specify this property in an LF program, add the following to the program header..
+Make sure the intended program to be debugged on the **target** device has an accessible `.elf` binary that was built using the `Debug` option. To specify this property in an LF program, add the following to the program header:
+
 ```lf
 target C {
     platform: {
@@ -118,17 +113,22 @@ target C {
 ```
 
 First start openocd using the following command
+
 ```bash
 openocd -f interface/cmsis-dap.cfg -c "adapter speed 5000" -f target/rp2040.cfg -s tcl
 ```
+
 In a separate terminal window, run the following GDB session providing the elf binary. Since this binary was built using the `Debug` directive, it will include a symbol table that will be used for setting up breakpoints in gdb.
+
 ```bash
 gdb <binary>.elf
 ```
 Once the GDB environment is opened, connect to the debug server using the following. Each core exposes its own port but `core0` which runs the main thread exposes `3333`.
+
 ```bash
 (gdb) target extended-remote localhost:3333
 ```
+
 From this point onwards normal gdb functionality such as breakpoints, stack traces and register analysis can be accessed through various gdb commands.
 
 ## Emulator
