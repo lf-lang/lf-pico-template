@@ -5,12 +5,43 @@ authors = ["gundralaa@berkeley.edu"]
 description = "Lingua Franca project template for rp2040 bare metal target platform"
 
 [properties]
+# shared properties
+# platform = "RP2040"
+threading = false
 
+# HelloPico
+# Periodically write "Hello, World! to specified stdout
 [[app]]
 name = "HelloPico"
-main_reactor = "./src/HelloPico.lf"
 target = "C"
 platform = "RP2040"
+main_reactor = "src/HelloPico.lf"
+dependencies = {}
 
-[app.dependencies]
 [app.properties]
+# platform = { name = "RP2040", board = "pico:usb" }
+
+# Blink
+# Periodically blink onboard LED and toggle GPIO
+[[app]]
+name = "Blink"
+target = "C"
+platform = "RP2040"
+main_reactor = "src/Blink.lf"
+dependencies = {}
+
+[app.properties]
+# platform = { name = "RP2040", board = "pico:usb" }
+
+# Timer
+# Periodically print logical and physical time with measured lag
+[[app]]
+name = "Timer"
+target = "C"
+platform = "RP2040"
+main_reactor = "src/Timer.lf"
+dependencies = {}
+
+[app.properties]
+# platform = { name = "RP2040", board = "pico:usb" }
+
