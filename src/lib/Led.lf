@@ -1,6 +1,6 @@
 target C {
     platform: "RP2040",
-    threading: false
+    threading: false,
 }
 
 preamble {=

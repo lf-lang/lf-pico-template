@@ -14,7 +14,6 @@ pkgs.mkShell {
     zellij
     minicom
     gdb
-    #fzf
   ];
   buildInputs = [
     # lf
