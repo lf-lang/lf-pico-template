@@ -12,7 +12,7 @@ pkgs.mkShell {
     git
     nodejs
     zellij
-    minicom
+    screen
     gdb
     #fzf
   ];
