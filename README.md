@@ -34,10 +34,33 @@ Before flashing the binary to your rp2040 based board, the board must be placed 
 The [picotool](https://github.com/raspberrypi/picotool) application installed in the nix shell is an easy way to interact with boards.
 With the application you can check what programs are currently flashed and can directly load program binaries. Run ``picotool help`` for more information on its capabilities.
 
-
 Run the following to flash an application binary on to your board.
 ``` shell
 picotool load -x bin/Blink.elf
+```
+
+### WSL
+When using the Windows Subsystem for Linux on a windows machine for development, there are a few extra steps to attach the device to your wsl instance.
+The official [instructions](https://learn.microsoft.com/en-us/windows/wsl/connect-usb) are reflected here. Install the required software and execute the following.
+
+Open a powershell prompt as an administrator.
+```
+usbipd wsl list
+```
+
+Note the busid of either the RP2040 board or pico-probe that is trying to be mounted to the instance. These boards will likely show as either **USB Mass Storage Device, RP2 Boot** when connected in bootsel mode or 
+as a **USB Serial Device** of some type when connected and hosting a USB stdio application.
+Attach the device using the following command.
+```
+usbipd wsl attach --busid <bus_id>
+```
+
+This wil mount the device to the wsl instance while removing access to the device from the windows instance. In a wsl shell check the device has been attached.
+After this is confirmed, copy the rp2040 udev rules and hotplug restart udev.
+```
+lsusb
+wget https://raw.githubusercontent.com/raspberrypi/openocd/rp2040/contrib/60-openocd.rules -P /etc/udev/rules.d/
+sudo service udev restart && sudo udevadm trigger
 ```
 
 ## Serial

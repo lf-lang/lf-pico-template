@@ -2,13 +2,12 @@
 name = "lf-pico-template"
 version = "0.1.0"
 authors = ["gundralaa@berkeley.edu"]
-description = "Lingua Franca project template for rp2040 bare metal target platform"
+description = "Lingua Franca project template for RP2040 bare metal target platform"
 
 [properties]
 # shared properties
 # platform = "RP2040"
 threading = false
-no-compile = true
 
 # HelloPico
 # Periodically write "Hello, World! to specified stdout
