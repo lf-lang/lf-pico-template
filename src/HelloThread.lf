@@ -8,6 +8,9 @@ target C {
 /**
 * Multicore test that attempts to concurrently
 * print from both cores using parallel reactors
+*
+* TODO: read about peripheral access from both cores
+* the possibility of using a shared memory space
 * 
 * @author Abhi Gundrala
 **/
@@ -20,8 +23,9 @@ preamble {=
 reactor Hello {
     input trig:bool;
     reaction(trig) {=
+        // print core number
         printf("Hello, from core %d", 
-            get_core_num()); 
+            get_core_num());
     =}
 }
 
@@ -33,5 +37,4 @@ main reactor {
         lf_set(hell0.trig, true); 
         lf_set(hell1.trig, true); 
     =}
-
 }
