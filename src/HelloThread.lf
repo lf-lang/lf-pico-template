@@ -1,40 +1,53 @@
 target C {
-    platform: "Rp2040",
+    platform: "rp2040",
     threading: true,
     workers: 2,
     tracing: false,
+    //scheduler: STATIC,
+    //logging: "debug",
+    build-type: "Debug",
 }
 
 /**
 * Multicore test that attempts to concurrently
 * print from both cores using parallel reactors
-*
-* TODO: read about peripheral access from both cores
-* the possibility of using a shared memory space
 * 
 * @author Abhi Gundrala
 **/
 
-preamble {=
-    #include <pico/stdlib.h>
-    #include <stdio.h>
-=}
+import Led from "./lib/Led.lf";
 
-reactor Hello {
-    input trig:bool;
-    reaction(trig) {=
+reactor GroupOne {
+    timer t0(0, 200 msec);
+    
+    green_led = new Led(pin=19);
+    
+    reaction(t0) -> green_led.tog {=
+        // toggle led
+        lf_set(green_led.tog, true); 
         // print core number
-        printf("Hello, from core %d", 
+        printf("core %d\n", 
+            get_core_num());
+    =}
+}
+
+reactor GroupTwo {
+    timer t1(0, 300 msec);
+    
+    red_led = new Led(pin=21);
+    yellow_led = new Led(pin=20);
+    
+    reaction(t1) -> yellow_led.tog, red_led.tog {=
+        // toggle leds
+        lf_set(red_led.tog, true); 
+        lf_set(yellow_led.tog, true); 
+        // print core number
+        printf("core %d\n", 
             get_core_num());
     =}
 }
 
 main reactor {
-    timer t1(0, 100 msec);
-    hell0 = new Hello();
-    hell1 = new Hello();
-    reaction(t1) -> hell0.trig, hell1.trig {=
-        lf_set(hell0.trig, true); 
-        lf_set(hell1.trig, true); 
-    =}
+    g1 = new GroupOne();
+    g2 = new GroupTwo();
 }

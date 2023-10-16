@@ -45,3 +45,27 @@ dependencies = {}
 [app.properties]
 # platform = { name = "RP2040", board = "pico:usb" }
 
+# HelloThread
+# Periodically print from either core using two workers 
+[[app]]
+name = "HelloThread"
+target = "C"
+platform = "RP2040"
+main_reactor = "src/HelloThread.lf"
+dependencies = {}
+
+[app.properties]
+# platform = { name = "RP2040", board = "pico:usb" }
+
+# HelloThreadStatic
+# Periodically print from either core using two workers 
+[[app]]
+name = "HelloThreadStatic"
+target = "C"
+platform = "RP2040"
+main_reactor = "src/HelloThreadStatic.lf"
+dependencies = {}
+
+[app.properties]
+# platform = { name = "RP2040", board = "pico:usb" }
+

@@ -1,7 +1,7 @@
 target C {
-    platform: "Rp2040",
+    platform: "rp2040",
     threading: false,
-    timeout: 5 sec,
+    build-type: "Debug"
 }
 
 preamble {=
