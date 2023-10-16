@@ -3,9 +3,15 @@ target C {
     threading: true,
     workers: 2,
     tracing: false,
+    scheduler: STATIC,
     //logging: "debug",
     build-type: "Debug",
 }
+
+preamble {=
+    #include <pico/stdlib.h>
+    #include <hardware/gpio.h>
+=}
 
 /**
 * Multicore test that attempts to concurrently
@@ -14,16 +20,18 @@ target C {
 * @author Abhi Gundrala
 **/
 
-import Led from "./lib/Led.lf";
-
 reactor GroupOne {
     timer t0(0, 200 msec);
+    state led:bool;
     
-    green_led = new Led(pin=19);
+    reaction(startup) {=
+        gpio_init(19);
+        gpio_set_dir(19, GPIO_OUT);
+    =}
     
-    reaction(t0) -> green_led.tog {=
-        // toggle led
-        lf_set(green_led.tog, true); 
+    reaction(t0) {=
+        self->led = !self->led; 
+        gpio_put(19, self->led);
         // print core number
         printf("core %d\n", 
             get_core_num());
@@ -32,14 +40,21 @@ reactor GroupOne {
 
 reactor GroupTwo {
     timer t1(0, 300 msec);
+    state rled:bool;
+    state yled:bool;
     
-    red_led = new Led(pin=21);
-    yellow_led = new Led(pin=20);
+    reaction(startup) {=
+        gpio_init(21);
+        gpio_set_dir(21, GPIO_OUT);
+        gpio_init(20);
+        gpio_set_dir(20, GPIO_OUT);
+    =}
     
-    reaction(t1) -> yellow_led.tog, red_led.tog {=
-        // toggle leds
-        lf_set(red_led.tog, true); 
-        lf_set(yellow_led.tog, true); 
+    reaction(t1) {=
+        self->rled = !self->rled; 
+        gpio_put(21, self->rled);
+        self->yled = !self->yled; 
+        gpio_put(20, self->yled);
         // print core number
         printf("core %d\n", 
             get_core_num());

@@ -1,5 +1,5 @@
 target C {
-    platform: "RP2040",
+    platform: "rp2040",
     threading: false,
 }
 
@@ -12,23 +12,23 @@ preamble {=
 * Led reactor that keeps track of led state.
 * Can either be toggled or set using different signals
 **/
-reactor Led {
+reactor Led(pin: uint = 25) {
     input tog:bool; // when is_present, will toggle the led
     input set:bool; // when is_present, set the led state to the input value
     state led:bool;
     
     reaction(startup) {=
-        gpio_init(25);
-        gpio_set_dir(25, GPIO_OUT);
+        gpio_init(self->pin);
+        gpio_set_dir(self->pin, GPIO_OUT);
     =}
     
     reaction(tog) {=
         self->led = !self->led; 
-        gpio_put(25, self->led);
+        gpio_put(self->pin, self->led);
     =}
 
     reaction(set) {=
         self->led = set->value;
-        gpio_put(25, self->led);
+        gpio_put(self->pin, self->led);
     =}
 }
