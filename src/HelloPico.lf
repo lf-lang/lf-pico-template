@@ -1,16 +1,17 @@
 target C {
-    platform: "Rp2040",
-    threading: false,
-    timeout: 5 sec,
+  platform: "Rp2040",
+  single-threaded: true,
+  timeout: 5 sec
 }
 
 preamble {=
-    #include <stdio.h>
+  #include <stdio.h>
 =}
 
 main reactor {
-    timer t1(0, 1 sec); 
-    reaction(t1) {=
-        printf("Hello World!\n");
-    =}
+  timer t1(0, 1 sec)
+
+  reaction(t1) {=
+    printf("Hello World!\n");
+  =}
 }
