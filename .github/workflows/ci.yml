@@ -23,6 +23,7 @@ jobs:
         with:
           check_mode: "compile"
           no_compile_flag: false
+          exclude_dirs: '["failing", "experimental"]'
           compiler_ref: ${{ needs.find-latest-release.outputs.ref }}
 
   check-format:
@@ -38,4 +39,5 @@ jobs:
       - uses: lf-lang/action-check-lf-files@main
         with:
           check_mode: "format"
+          exclude_dirs: '["failing", "experimental"]'
           compiler_ref: ${{ needs.find-latest-release.outputs.ref }}
