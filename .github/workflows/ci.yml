@@ -24,7 +24,9 @@ jobs:
       - name: Install nix
         run: sudo apt install nix cmake
       - name: Run nix develop
-        run: sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
+        run: |
+          sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
+          echo "CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH" >> "$GITHUB_ENV"
       - uses: lf-lang/action-check-lf-files@main
         with:
           check_mode: "compile"
