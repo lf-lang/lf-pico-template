@@ -1,6 +1,5 @@
 target C {
     platform: "Rp2040",
-    threading: true,
     workers: 2,
     tracing: false,
 }

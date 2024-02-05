@@ -1,14 +1,15 @@
 target C {
-    platform: "Rp2040",
-    threading: false
+  platform: "Rp2040",
+  single-threaded: true
 }
 
-import Led from "./lib/Led.lf";
+import Led from "./lib/Led.lf"
 
 main reactor {
-    timer t1(0, 100 msec);
-    led = new Led();
-    reaction(t1) -> led.tog {=
-        lf_set(led.tog, true);
-    =}
+  timer t1(0, 100 msec)
+  led = new Led()
+
+  reaction(t1) -> led.tog {=
+    lf_set(led.tog, true);
+  =}
 }
