@@ -21,11 +21,10 @@ jobs:
           echo "$JAVA_HOME_17_X64/bin" >> $GITHUB_PATH
           echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
         shell: bash
-      - name: Install nix
-        run: sudo apt install nix cmake
-      - name: Run nix develop
+      - name: Install dev dependencies
         run: |
-          sudo nix develop --profile /tmp/my-build-env --extra-experimental-features nix-command --extra-experimental-features flakes --command ./.github/scripts/export-env.sh
+          sudo apt update
+          sudo apt install cmake make gcc gcc-arm-none-eabi libnewlib-arm-none-eabi
       - uses: lf-lang/action-check-lf-files@main
         with:
           check_mode: "compile"
