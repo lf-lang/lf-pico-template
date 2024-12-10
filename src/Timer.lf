@@ -1,6 +1,4 @@
-target C {
-  platform: "Rp2040",
-  single-threaded: true,
+target uC {
   timeout: 10 sec
 }
 
