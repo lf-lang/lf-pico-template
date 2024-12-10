@@ -45,3 +45,5 @@ echo "Generating source files for ${LF_MAIN_NAME} into ${SRC_GEN_PATH}"
 ${REACTOR_UC_PATH}/lfc/bin/lfc-dev ${LF_MAIN}
 
 cmake -Bbuild -DLF_SRC_GEN_PATH=${SRC_GEN_PATH} -DLF_MAIN_NAME=${LF_MAIN_NAME}
+
+cmake --build build --parallel $(nproc)

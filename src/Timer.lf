@@ -5,6 +5,7 @@ target uC {
 preamble {=
   #include <stdio.h>
   #include "pico/stdlib.h"
+  #include "reactor-uc/reactor-c.h"
 =}
 
 main reactor {

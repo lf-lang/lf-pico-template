@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.20.0)
-
-set(LF_MAIN_NAME "Blink" CACHE STRING "Name of the LF application")
-set(LF_SRC_GEN_PATH "src-gen/Blink" CACHE STRING "Name of the LF application")
-set(PLATFORM "PICO" CACHE STRING "Platform to target")
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/pico-sdk/pico_sdk_init.cmake)
 project(reactor-uc-pico)
+
+set(LF_MAIN_NAME "Blink" CACHE STRING "Name of the LF application")
+set(LF_SRC_GEN_PATH "src-gen" CACHE STRING "Path to the src-gen directory")
+set(PLATFORM "PICO" CACHE STRING "Platform to target")
 
 pico_sdk_init()
 
